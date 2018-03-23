@@ -1,3 +1,7 @@
+.message-input {
+  width: 80%;
+  min-width: 240px;
+}
 .message-card {
   margin: 8px;
   border-radius: 16px;

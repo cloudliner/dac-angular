@@ -1,8 +1,9 @@
 <div>
-  <mat-form-field>
-    <textarea matInput matTextareaAutosize matAutosizeMinRows="1" placeholder="Type your message ..." #input></textarea>
+  <mat-form-field class="message-input">
+    <textarea matInput matTextareaAutosize matAutosizeMinRows="1"
+      placeholder="Type your message ..." #input></textarea>
   </mat-form-field>
-  <button (click)="add(input.value)" mat-raised-button color="primary">Send</button>
+  <button (click)="add(input.value)" mat-mini-fab color="primary">Send</button>
 </div>
 <mat-card *ngFor="let item of timeline | async" class="message-card">
   <mat-card-content>{{ item.message }}</mat-card-content>
