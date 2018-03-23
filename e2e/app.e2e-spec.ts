@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import { browser } from 'protractor';
 
 describe('dac-angular App', () => {
   let page: AppPage;
@@ -7,8 +8,9 @@ describe('dac-angular App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display first chat message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    browser.sleep(5000);
+    expect(page.getFirstMessage()).toEqual('Hello, World!');
   });
 });
