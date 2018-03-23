@@ -15,11 +15,11 @@ before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 before_script:
-- ng build --prod
-script:
 - ng lint
 - ng test --single-run --code-coverage
 - ng e2e
+script:
+- ng build --prod
 after_success:
 - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 deploy:
