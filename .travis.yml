@@ -22,6 +22,10 @@ script:
 - ng e2e
 after_success:
 - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-env:
-  global:
+deploy:
+  provider: firebase
+  token:
     secure: adXjXAiklHyh0IZkpyxi7SJdSGDaE63RdeyWjq0mWjy44gwRSYVkloOBBa2/RSdKIaamzlh0D7CAtZVgLWUjoPRPVDjdPnTXvDMNKjSR0XnMOcPx4PSFulVUWymYixtc1GaSeck/DH6kH5KNFdy3vITJAnyH4Bm05+DgS4/KGvQjwDnXWQ2U3gU4fJ2B44Lu+/pk1WWTlnL6JwXfKrPVp+IvHRfhYYKBvMCPwxhC65Ut4I5i7GKccqS95oalu9ws5H9YSRUR/PDrm1hdU3VxcK22NnHhd9qSZl/wVt3xfdcqnBxN8y2w5g5xBcEcMeJ1f4E19xZUt7Y2VdmTlpEDgmlEUljetxgVXDTe3poHPNJVKjQVM8w0uGmsB8yfoQcL5YsdH3eBTe9OuubprMhE+pJUlmI5mnFMc+3Qtz3mRUIrlUGGJXVcYQxKOGtm49fEhjUX+axzcUETIJt0jN17DKDmBdDigKVty5DSQSA+dKRKq+uy2aYKpITRebJ/gOUjyGDcJQinA0Lf8qjhVdTs/xxQMWOI06PNg1T6QUOcxBeC+8U25UQzIdpTzuSL8IFPUayQp23Wwm6oPw6g9V7+TEo3Cb2DiASAbXmO2ABmlFcKNdYsFA4vRZ8yGQS4te/h8Xpqkqx0lyqTn7xaWFP0OZIqYOxuD/SPlolFYR68+IY=
+  skip_cleanup: true
+  on:
+    branch: master
