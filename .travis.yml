@@ -20,3 +20,5 @@ script:
 - ng lint
 - ng test --single-run --code-coverage
 - ng e2e
+after_success:
+- cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
