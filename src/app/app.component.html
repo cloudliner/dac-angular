@@ -1,9 +1,11 @@
 <div>
-  <input type="text" #input>
-  <button (click)="add(input.value)">Send</button>
+  <mat-form-field>
+    <input matInput placeholder="Type your message ..." #input>
+  </mat-form-field>
+  <button (click)="add(input.value)" mat-raised-button>Send</button>
 </div>
 <ul>
-  <li *ngFor="let item of timeline | async">
+  <mat-card *ngFor="let item of timeline | async">
     {{ item.message }}
-  </li>
+  </mat-card>
 </ul>

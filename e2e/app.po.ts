@@ -6,6 +6,6 @@ export class AppPage {
   }
 
   getFirstMessage() {
-    return element(by.css('app-root ul li')).getText();
+    return element(by.css('app-root ul mat-card')).getText();
   }
 }
