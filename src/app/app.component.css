@@ -1,3 +1,4 @@
-ul {
-  list-style-type: none;
+.message-card {
+  margin: 8px;
+  border-radius: 16px;
 }

@@ -45,10 +45,10 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app.timeline).toBeDefined();
   }));
-  it('should render message in a mat-card tag', async(() => {
+  it('should render message in a mat-card-content tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('ul>mat-card').textContent).toContain('Hello, Test!');
+    expect(compiled.querySelector('mat-card > mat-card-content').textContent).toContain('Hello, Test!');
   }));
 });
