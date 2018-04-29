@@ -6,3 +6,12 @@
   margin: 8px;
   border-radius: 16px;
 }
+.area-input {
+  padding: 0;
+  width: auto;
+}
+.area-messages {
+  padding: 0;
+  height: 100%;
+}
+
