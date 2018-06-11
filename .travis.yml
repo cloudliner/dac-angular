@@ -2,7 +2,7 @@ dist: trusty
 sudo: required
 language: node_js
 node_js:
-- 8.9.4
+- 9.11.1
 addons:
   chrome: stable
 cache:
@@ -16,7 +16,7 @@ before_install:
 - sh -e /etc/init.d/xvfb start
 before_script:
 - ng lint
-- ng test --single-run --code-coverage
+- ng test --watch=false --code-coverage
 - ng e2e
 script:
 - ng build --prod

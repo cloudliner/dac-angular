@@ -1,14 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/from';
+import { from } from 'rxjs';
 
 const timeline = [[
   { message: 'Hello, Test!' }
 ]];
-const data = Observable.from(timeline);
+const data = from(timeline);
 const collectionStub = {
   valueChanges: jasmine.createSpy('valueChanges').and.returnValue(data)
 };
