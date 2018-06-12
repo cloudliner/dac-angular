@@ -1,3 +1,17 @@
-ul {
-  list-style-type: none;
+.message-input {
+  width: 80%;
+  min-width: 240px;
 }
+.message-card {
+  margin: 8px;
+  border-radius: 16px;
+}
+.area-input {
+  padding: 0;
+  width: auto;
+}
+.area-messages {
+  padding: 0;
+  height: 100%;
+}
+
