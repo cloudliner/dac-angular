@@ -1,5 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AppComponent } from './app.component';
 import { from } from 'rxjs';
 
