@@ -5,9 +5,11 @@
 /dist-server
 /tmp
 /out-tsc
+/functions/lib
 
 # dependencies
 /node_modules
+/functions/node_modules
 
 # IDEs and editors
 /.idea
@@ -27,12 +29,14 @@
 
 # misc
 /.sass-cache
+/.firebase
 /connect.lock
 /coverage
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log
 testem.log
+firebase-debug.log
 /typings
 
 # e2e
