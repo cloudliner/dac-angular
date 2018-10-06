@@ -1,0 +1,12 @@
+PUT timeline
+{ 
+  "mappings" : {
+    "item": {
+      "properties": {
+        "message": {
+          "type": "text"
+        }
+      }
+    }
+  }
+}
