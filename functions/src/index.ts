@@ -8,7 +8,7 @@ import * as functions from 'firebase-functions';
 // });
 
 // const functions = require('firebase-functions');
-// const _ = require('lodash');
+import * as _ from 'lodash';
 // const request = require('request-promise');
 
 exports.indexCarsToElastic = functions.firestore
