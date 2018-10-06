@@ -12,6 +12,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@types/lodash": "^4.14.116",
+    "@types/request-promise": "^4.1.42",
     "firebase-admin": "~6.0.0",
     "firebase-functions": "^2.0.3",
     "lodash": "^4.17.11",
