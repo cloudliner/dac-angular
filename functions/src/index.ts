@@ -1,15 +1,6 @@
 import * as functions from 'firebase-functions';
-
-// Start writing Firebase Functions
-// https://firebase.google.com/docs/functions/typescript
-
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   response.send("Hello from Firebase!");
-// });
-
-// const functions = require('firebase-functions');
 import * as _ from 'lodash';
-// const request = require('request-promise');
+import * as request from 'request-promise';
 
 exports.indexCarsToElastic = functions.firestore
   .document('/timeline/{itemId}')
