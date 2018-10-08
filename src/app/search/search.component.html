@@ -1,0 +1,10 @@
+<div>
+  <input type="text" #keyword>
+  <button (click)="search(keyword.value)">Search</button>
+</div>
+<ul>
+  <p>Total {{ hits }} hits</p>
+  <li *ngFor="let item of searchResult">
+    {{ item._source.message }}
+  </li>
+</ul>
