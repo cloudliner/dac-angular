@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions';
 import * as _ from 'lodash';
 import * as request from 'request-promise';
+import * as express from 'express';
+import * as cors from 'cors';
 
 exports.indexTimelineToElastic = functions.firestore
   .document('/timeline/{itemId}')
@@ -32,14 +34,14 @@ exports.indexTimelineToElastic = functions.firestore
 
   });
 
-exports.searchTimelineElastic = functions.https.onRequest((req, res) => {
-  const keyword = req.query.keyword;
-
-  // const elasticSearchFields = ['message'];
+const app = express();
+app.use(cors({ origin: true }));
+app.post('/timeline/_search', (req, res) => {
   const elasticSearchConfig = functions.config().elasticsearch;
-  const elasticSearchUrl = elasticSearchConfig.url + 'timeline/_search';
   const elasticSearchMethod = 'POST';
+  const elasticSearchUrl = elasticSearchConfig.url + 'timeline/_search';
 
+  console.log('ElasticSearch request: ' + req.body);
   const elasticSearchRequest = {
     method: elasticSearchMethod,
     uri: elasticSearchUrl,
@@ -47,12 +49,14 @@ exports.searchTimelineElastic = functions.https.onRequest((req, res) => {
       username: elasticSearchConfig.username,
       password: elasticSearchConfig.password,
     },
-    body: { query: { bool: { must: [{ term: { 'message' : keyword } }], must_not: [], should: [] }}, from: 0, size: 10},
+    body: req.body,
     json: true
   };
 
   request(elasticSearchRequest).then(response => {
-    console.log('ElasticSearch response', response);
+    console.log('ElasticSearch response: ', response);
     res.send(response);
   });
 });
+
+exports.elastic = functions.https.onRequest(app);
