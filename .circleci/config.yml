@@ -33,7 +33,9 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-           - .
+           - dist
+           - .firebaserc
+           - firebase.json
   deploy:
     working_directory: ~/workspace
     docker:
