@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  firebase-deploy: cloudliner/firebase-deploy@dev:second
+  firebase-deploy: cloudliner/firebase-deploy@dev:third
 jobs:
   build:
     working_directory: ~/workspace
