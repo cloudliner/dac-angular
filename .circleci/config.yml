@@ -29,9 +29,9 @@ jobs:
       - run:
           name: Build
           command: npm run ng build -- --prod
-     - persist_to_workspace:
-         root: .
-         paths:
+      - persist_to_workspace:
+          root: .
+          paths:
            - .
   deploy:
     working_directory: ~/workspace
