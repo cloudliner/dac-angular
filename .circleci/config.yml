@@ -28,6 +28,9 @@ jobs:
           name: E2E Test
           command: npm run ng e2e
       - run:
+          name: Coveralls
+          command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+      - run:
           name: Build
           command: npm run ng build -- --prod
       - persist_to_workspace:
