@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  firebase-deploy: cloudliner/firebase-deploy@dev:first
 jobs:
   build:
     working_directory: ~/workspace
@@ -27,26 +29,26 @@ jobs:
       - run:
           name: Build
           command: npm run ng build -- --prod
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-  deploy:
-    working_directory: ~/workspace
-    docker:
-      - image: circleci/node:8
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Deploy to Firebase
-          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
+    #  - persist_to_workspace:
+    #      root: .
+    #      paths:
+    #        - .
+#   deploy:
+#     working_directory: ~/workspace
+#     docker:
+#       - image: circleci/node:8
+#     steps:
+#       - attach_workspace:
+#           at: .
+#       - run:
+#           name: Deploy to Firebase
+#           command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
 workflows:
   version: 2
   build-and-deploy:
     jobs:
       - build
-      - deploy:
+      - firebase-deploy:
           requires:
             - build
           filters:
