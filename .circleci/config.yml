@@ -1,9 +1,9 @@
 version: 2.1
 jobs:
   build:
+    working_directory: ~/workspace
     docker:
       - image: circleci/node:10-browsers
-    working_directory: /tmp/dac-angular
     steps:
       - checkout
       - restore_cache:
@@ -28,10 +28,12 @@ jobs:
           name: Build
           command: npm run ng build -- --prod
   deploy:
+    working_directory: ~/workspace
     docker:
       - image: circleci/node:8
-    working_directory: /tmp/dac-angular
     steps:
+      - attach_workspace:
+          at: .
       - run:
           name: Deploy to Firebase
           command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
