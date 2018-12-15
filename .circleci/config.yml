@@ -48,7 +48,7 @@ workflows:
   build-and-deploy:
     jobs:
       - build
-      - firebase-deploy:
+      - firebase-deploy/firebase-deploy:
           requires:
             - build
           filters:

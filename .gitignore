@@ -17,6 +17,7 @@
 *.launch
 .settings/
 *.sublime-workspace
+.circleci/config-2.0.yml
 
 # IDE - VSCode
 .vscode/*
