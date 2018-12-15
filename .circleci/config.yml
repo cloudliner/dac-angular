@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:10-browsers
+    working_directory: ~/dac-angular
     steps:
       - checkout
       - restore_cache:
@@ -29,6 +30,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/node:8
+    working_directory: ~/dac-angular
     steps:
       - run:
           name: Deploy to Firebase
