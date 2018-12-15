@@ -22,7 +22,7 @@ jobs:
           command: npm run ng test -- --watch=false --code-coverage
       - run:
           name: E2E Test
-          command: npm ng e2e
+          command: npm run ng e2e
       - run:
           name: Build
           command: npm run ng build -- --prod
