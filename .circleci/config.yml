@@ -5,6 +5,9 @@ jobs:
       - image: circleci/node:10.14-browsers
     steps:
       - checkout
+      - run:
+          name: Hello
+          command: echo 'Hello World!'
       - restore_cache:
           key: dependencies-{{ checksum "package.json" }}
       - run: 
