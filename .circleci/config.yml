@@ -1,13 +1,10 @@
-version: 2.1
+version: 2.0
 jobs:
   build:
     docker:
       - image: circleci/node:10.14-browsers
     steps:
       - checkout
-      - run:
-          name: Hello
-          command: echo 'Hello World!'
       - restore_cache:
           key: dependencies-{{ checksum "package.json" }}
       - run: 
@@ -17,6 +14,15 @@ jobs:
           key: dependencies-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run:
+          name: Lint
+          command: npm run ng lint
+      - run:
+          name: Unit Test
+          command: npm run ng test -- --watch=false --code-coverage
+      - run:
+          name: E2E Test
+          command: npm ng e2e
       - run:
           name: Build
           command: npm run ng build -- --prod
