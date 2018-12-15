@@ -19,4 +19,4 @@ jobs:
             - ./node_modules
       - run:
           name: Build
-          command: ng build --prod
+          command: npm run ng build -- --prod
