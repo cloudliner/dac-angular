@@ -1,0 +1,61 @@
+version: 2.1
+orbs:
+  firebase-deploy: cloudliner/firebase-deploy@0.0.2
+jobs:
+  build:
+    working_directory: ~/workspace
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependencies-{{ checksum "package.json" }}
+      - run: 
+          name: Install
+          command: npm install
+      - save_cache:
+          key: dependencies-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+            - package-lock.json
+      - run:
+          name: Lint
+          command: npm run ng lint
+      - run:
+          name: Unit Test
+          command: npm run ng test -- --watch=false --code-coverage
+      - run:
+          name: E2E Test
+          command: npm run ng e2e
+      - run:
+          name: Coveralls
+          command: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+      - run:
+          name: Build
+          command: npm run ng build -- --prod
+      - persist_to_workspace:
+          root: .
+          paths:
+           - dist
+           - .firebaserc
+           - firebase.json
+  deploy:
+    working_directory: ~/workspace
+    docker:
+      - image: circleci/node:8
+    steps:
+      - attach_workspace:
+          at: .
+      - firebase-deploy/deploy:
+          token: $FIREBASE_DEPLOY_TOKEN
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
