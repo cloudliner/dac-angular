@@ -11,6 +11,9 @@
 /node_modules
 /functions/node_modules
 
+# sample files
+/src/assets/pdf-sample
+
 # IDEs and editors
 /.idea
 .project
