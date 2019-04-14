@@ -34,6 +34,11 @@ exports.indexTimelineToElastic = functions.firestore
 
   });
 
+exports.updateElastic = functions.remoteConfig.onUpdate(versionMetadata => {
+	const currentVersion = versionMetadata.versionNumber;
+	console.log(`updateElastic: ${currentVersion}`);
+});
+
 const app = express();
 app.use(cors({ origin: true }));
 app.post('/timeline/_search', (req, res) => {
