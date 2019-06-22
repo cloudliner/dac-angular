@@ -2,9 +2,9 @@
   <input type="text" #keyword>
   <button (click)="search(keyword.value)">Search</button>
 </div>
-<ul>
-  <p>Total {{ hits }} hits</p>
-  <li *ngFor="let item of searchResult">
-    {{ item._source.message }}
-  </li>
-</ul>
+<ng-container *ngIf="searchResult | async as result">
+  <p>Total {{ result.hits.total }} hits</p>
+  <ul *ngFor="let item of result.hits.hits">
+    <li>{{ item._source.message }} / id:{{ item._id }} / score:{{ item._score }}</li>
+  </ul>
+</ng-container>

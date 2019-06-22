@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+import { SearchResponse, TimelineItem } from '../../interface/search.interface';
 import { ElasticsearchService } from '../elasticsearch.service';
 
 @Component({
@@ -7,23 +11,14 @@ import { ElasticsearchService } from '../elasticsearch.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  hits = 0;
-  searchResult: any;
+  searchResult: Observable<HttpEvent<SearchResponse<TimelineItem>>>;
+
   constructor(private es: ElasticsearchService) { }
 
   ngOnInit() {
   }
 
   search(keyword: string) {
-      this.es.fullTextSearch('timeline', 'message', keyword).then(
-        response => {
-          this.hits = response.hits.total;
-          this.searchResult = response.hits.hits;
-          console.log(response);
-        }, error => {
-          console.error(error);
-        }).then(() => {
-          console.log('Search Completed!');
-        });
-    }
+    this.searchResult = this.es.fullTextSearch(keyword);
+  }
 }
