@@ -1,4 +1,5 @@
 import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
 import * as corsLib from 'cors';
 
 import { Client, RequestParams, ApiResponse } from '@elastic/elasticsearch';
@@ -6,6 +7,8 @@ import { SearchBody, SearchResponse, TimelineItem } from '../../src/interface/se
 
 const cors = corsLib();
 const elasticConfig = functions.config().elasticsearch;
+admin.initializeApp(functions.config().firebase);
+const db = admin.firestore();
 
 const getElasticClient = (): Client => {
 	const client = new Client({
@@ -58,6 +61,41 @@ exports.elasticDeleteTimelineIndex = functions.https.onRequest(async(req, res) =
 		const statusCode = error && error.meta && error.meta.statusCode ? error.meta.statusCode : 500;
 		res.status(statusCode).send(JSON.stringify(error.meta.body ? error.meta.body : error));
 	}
+});
+
+exports.elasticBatchTimelineIndex = functions.https.onRequest(async (req, res) => {
+	console.log('Batch Timeline Index');
+	const snapshot = await db.collection('timeline').get();
+	let successCount = 0;
+	let errorCount = 0;
+	const updates = snapshot.docs.map(async(doc) => {
+		try {
+			console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+			const client = getElasticClient();
+			const createParams: RequestParams.Create<Pick<FirebaseFirestore.DocumentData, string>> = {
+				index: 'timeline',
+				type: 'item',
+				id: doc.id,
+				body: doc.data(),
+			}
+			const createRes: ApiResponse<any> = await client.create(createParams);
+			console.log(JSON.stringify(createRes));
+			successCount ++;
+			return createRes.body;
+		} catch (error) {
+			console.error(JSON.stringify(error));
+			errorCount ++;
+			return error.meta.body ? error.meta.body : error;
+		}
+	});
+	const list = await Promise.all(updates);
+	const result = {
+		successCount,
+		errorCount,
+		list,
+	}
+	console.log(JSON.stringify(result));
+	res.send(JSON.stringify(result));
 });
 
 exports.elasticUpdateTimelineIndex = functions.firestore
