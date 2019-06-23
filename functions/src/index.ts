@@ -15,7 +15,52 @@ const getElasticClient = (): Client => {
 	return client;
 }
 
-exports.indexTimelineToElastic = functions.firestore
+exports.elasticCreateTimelineIndex = functions.https.onRequest(async(req, res) => {
+	console.log('Create Timeline Index');
+	const client = getElasticClient();
+	try {
+		const body =  {
+			mappings: {
+				item: {
+					properties: {
+						message: {
+							type: 'text'
+						}
+					}
+				}
+			}
+		}
+		const createIndexParamas: RequestParams.IndicesCreate<any> = {
+			index: 'timeline',
+			body: body
+		}
+		const createIndexRes: ApiResponse<any> = await client.indices.create(createIndexParamas);
+		console.log(JSON.stringify(createIndexRes));
+		res.send(JSON.stringify(createIndexRes.body));
+	} catch (error) {
+		console.error(JSON.stringify(error));
+		res.status(500).send(JSON.stringify(error.meta.body ? error.meta.body : error));
+	}
+});
+
+exports.elasticDeleteTimelineIndex = functions.https.onRequest(async(req, res) => {
+	console.log('Delete Timeline Index');
+	const client = getElasticClient();
+	try {
+		const deleteIndexParams: RequestParams.IndicesDelete = {
+			index: 'timeline'
+		};
+		const deleteIndexRes: ApiResponse<any> = await client.indices.delete(deleteIndexParams);
+		console.log(JSON.stringify(deleteIndexRes));
+		res.send(JSON.stringify(deleteIndexRes.body));
+	} catch (error) {
+		console.error(JSON.stringify(error));
+		const statusCode = error && error.meta && error.meta.statusCode ? error.meta.statusCode : 500;
+		res.status(statusCode).send(JSON.stringify(error.meta.body ? error.meta.body : error));
+	}
+});
+
+exports.elasticUpdateTimelineIndex = functions.firestore
   .document('/timeline/{itemId}')
 	.onWrite(async(change, context) => {
 		const newData = change.after.exists ? change.after.data() : null;
@@ -62,25 +107,27 @@ exports.indexTimelineToElastic = functions.firestore
 		}
 	});
 
-exports.searchTimeline = functions.https.onRequest((req, res) => {
-	cors(req, res, () => {
+exports.searchTimeline = functions.https.onRequest(async(req, res) => {
+	cors(req, res, async() => {
 		console.log(req.body);
-		const keyword = req.body.keyword;
-		const searchParams: RequestParams.Search<SearchBody<TimelineItem>> = {
-			index: 'timeline',
-			body: {
-				query: {
-					match: { message: keyword }
+		const client = getElasticClient();
+		try {
+			const keyword = req.body.keyword;
+			const searchParams: RequestParams.Search<SearchBody<TimelineItem>> = {
+				index: 'timeline',
+				body: {
+					query: {
+						match: { message: keyword }
+					}
 				}
 			}
-		}
-
-		const client = getElasticClient();
-		client.search(searchParams).then((searchRes: ApiResponse<SearchResponse<TimelineItem>>) => {
+			const searchRes: ApiResponse<SearchResponse<TimelineItem>> = await client.search(searchParams);
 			console.log(JSON.stringify(searchRes.body));
-				res.send(searchRes.body);
-		}).catch((reason) => {
-			console.error(JSON.stringify(reason));
-		});
+			res.send(searchRes.body);
+		} catch (error) {
+			console.error(JSON.stringify(error));
+			const statusCode = error && error.meta && error.meta.statusCode ? error.meta.statusCode : 500;
+			res.status(statusCode).send(JSON.stringify(error.meta.body ? error.meta.body : error));
+		}
 	});
 });
