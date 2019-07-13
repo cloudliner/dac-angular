@@ -11,8 +11,24 @@ admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 
 const getElasticClient = (): Client => {
+	/*
+	  firebase functions:config:set \
+  		elasticsearch.username="user" \
+  		elasticsearch.password="password" \
+  		elasticsearch.host="example.com" \
+  		elasticsearch.port="80" \
+  		elasticsearch.path="elasticsearch"
+	*/
+	let url = 'http://';
+	if (elasticConfig.username && elasticConfig.password) {
+		url += `${ elasticConfig.username }:${ elasticConfig.password }@`;
+	}
+	url += `${ elasticConfig.host }:${ elasticConfig.port }`;
+	if (elasticConfig.path) {
+		url += `/${ elasticConfig.path }`
+	}
 	const client = new Client({
-		node: `http://${ elasticConfig.username }:${ elasticConfig.password }@${ elasticConfig.host }:${ elasticConfig.port }/${ elasticConfig.path }`,
+		node: url,
 		sniffOnStart: true,
 	});
 	return client;
