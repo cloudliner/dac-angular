@@ -31,7 +31,7 @@ gcloud auth configure-docker
 # GCPにDockerイメージをプッシュ
 docker push gcr.io/dac-angular-d2bbd/elastic
 
-# GCPでインタンス作成s
+# GCPでインタンス作成
 gcloud compute instances create-with-container elasticsearch --container-image=gcr.io/dac-angular-d2bbd/elastic --machine-type g1-small --zone us-central1-f --tags elastic-http-server --container-env-file=envfile --metadata=startup-script="echo 'vm.max_map_count=262144' > /etc/sysctl.conf; sysctl -p;"
 
 # 初回（GCEのネットワーク設定）
